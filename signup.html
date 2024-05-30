@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Sign-Up</title>
     <style>
       body {
         background-color: #ffffff;
@@ -30,14 +30,13 @@
         align-items: center;
       }
       p {
-        margin-top: 25px;
         text-align: center;
         font-size: 35px;
         font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
           "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
       }
       input {
-        padding: 15px;
+        padding: 10px;
         outline: none;
         border: none;
         width: 250px;
@@ -60,28 +59,35 @@
   <body>
     <div class="main">
       <div class="sub">
-        <form class="login-form" id="loginform">
-          <p>Login</p>
+        <form class="signup-form" id="signupform">
+          <p>Sign-Up</p>
           <br />
-         
+          <input type="text" id="firstName" placeholder="First name" />
+          <br />
+          <br />
+          <input type="text" id="lastName" placeholder="Last name" />
+          <br />
+          <br /> 
           <input type="email" id="email" placeholder="Email" />
+           <br>
+           <br>
+           <input type="password" id="password" placeholder="Password" />
           <br />
           <br />
-          <input type="password" id="password" placeholder="Password" />
-         
+          <input
+          type="password" id="confirmPassword" placeholder="Confirm Password" >
           <br />
           <br />
 
-          <button type="button" id="login-btn">Login</button>
+          <button id="signup-btn">Submit</button>
           <p id="message" style="color: red;font-size: 13px;"></p>
         </form>
           <p style="font-size: 12px;">
-            You don't have an account? <a href="signup.html">Register</a></Link>
+            Already have an account? <a href="login.html">Login</a></Link>
           </p>
-       
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="login.js"></script>
+    <script src="signup.js"></script>
   </body>
 </html>
