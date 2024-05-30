@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 7.	Use lodash library, check if an array includes specific value ,
+      // const arrray =[ 1,2,3,4,5]
+      const array = [1, 2, 3, 4, 5];
+      const includesValue = _.includes(array);
+      console.log(includesValue);
+
+      // 8.	const users = [ { name: 'John', age: 25 }, { name: 'Jane', age: 30 }, { name: 'Bob', age: 35 } ];
+      // sreturn the name of user whose age is between range 21-26,, use lodash
+      const users = [
+        { name: "John", age: 25 },
+        { name: "Jane", age: 30 },
+        { name: "Bob", age: 35 },
+      ];
+      const userInRange = _.find(
+        users,
+        (user) => user.age >= 21 && user.age <= 26
+      );
+      const userName = userInRange ? userInRange.name : "No user found";
+      console.log(userName);
+
+      //   9.	const numbers = [1, 2, 3]; , use lodash (map )
+      // return the square of numbers in an array and remove duplicates.
+      const numbers = [1, 2, 3];
+      const squaredNumbers = _.map(numbers, (number) => number * number);
+
+      const uniqueSquaredNumbers = _.uniq(squaredNumbers);
+      console.log(uniqueSquaredNumbers);
+    </script>
+  </body>
+</html>
