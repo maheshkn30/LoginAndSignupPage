@@ -108,17 +108,13 @@ app.post("/login", async function (req, res) {
   }
 });
 
-// Reading user from database
 app.get("/signup", async function (req, res) {
   try {
     // Pagination
-    const { page = 1, limit = 10 } = req.query;
-    const options = {
-      page: parseInt(page, 10),
-      limit: parseInt(limit, 10),
-    };
+    const { page = 1, limit = 3 } = req.query;
+    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
-    const result = await Signup.paginate({}, options);
+    const result = await Signup.find({}).skip(skip).limit(parseInt(limit, 10));
     res.status(200).json(result);
   } catch (error) {
     console.log(error.message);
