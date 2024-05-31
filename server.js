@@ -7,54 +7,60 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 
-// path dir
+// Serve static files
 app.use(express.static(path.join(__dirname, "./")));
 
+// Serve signup.html
 app.get("/", async function (req, res) {
   res.sendFile(path.join(__dirname, "./signup.html"));
 });
 
-// Routes
-app.get("/", function (req, res) {
-  res.send("hello api");
-});
-
-// Connecting database
+// Connecting to the database
 mongoose
-  .connect("mongodb://localhost:27017/demo")
+  .connect("mongodb://localhost:27017/demo", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(function () {
     app.listen(3000, function () {
-      console.log("Node Api running successfully");
+      console.log("Node API running successfully");
     });
-    console.log("mongoose connected");
+    console.log("Mongoose connected");
   })
   .catch(function (err) {
     console.log(err);
   });
 
-// Signup
+// Signup route
 app.post("/signup", async function (req, res) {
   try {
     const { firstName, lastName, email, password } = req.body;
+
+    // Check if user already exists
     const userExists = await Signup.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
     const newSignup = await Signup.create({
       firstName,
       lastName,
       email,
-      password,
+      password: hashedPassword,
     });
-    res.status(200).json(newSignup);
+
+    res.status(201).json(newSignup);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 });
 
-// Delete
+// Delete user by ID
 app.delete("/signup/:id", async function (req, res) {
   try {
     const { id } = req.params;
@@ -62,16 +68,16 @@ app.delete("/signup/:id", async function (req, res) {
 
     if (!signup) {
       return res.status(404).json({ message: "Cannot find user by ID" });
-    } else {
-      res.status(200).json(signup);
     }
+
+    res.status(200).json(signup);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 });
 
-// Login
+// Login route
 app.post("/login", async function (req, res) {
   try {
     const { email, password } = req.body;
@@ -89,12 +95,31 @@ app.post("/login", async function (req, res) {
     }
 
     // Check if the password matches
-    if (user.password !== password) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
     // Username and password match, success
     res.status(200).json({ msg: "Login successful" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Reading user from database
+app.get("/signup", async function (req, res) {
+  try {
+    // Pagination
+    const { page = 1, limit = 10 } = req.query;
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const result = await Signup.paginate({}, options);
+    res.status(200).json(result);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

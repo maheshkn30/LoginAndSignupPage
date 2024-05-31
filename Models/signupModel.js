@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+// installing pagination
+const mongPagination = require("mongoose-paginate-v2");
 // Signup page
 const signup = mongoose.Schema(
   {
@@ -24,6 +26,6 @@ const signup = mongoose.Schema(
     timestamps: true,
   }
 );
-
+signup.plugin(mongPagination);
 const Signup = mongoose.model("Signup", signup);
 module.exports = Signup;
