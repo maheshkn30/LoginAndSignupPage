@@ -45,3 +45,8 @@ A Node.js web application that provides user authentication functionality with l
 ```bash
 npm install
 ```
+### 1️⃣ Run Server
+
+```bash
+npm start
+```
