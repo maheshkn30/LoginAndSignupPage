@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Signup = require("./Models/signupModel");
 const path = require("path");
-
+const bcrypt = require("bcrypt");
 //// Middleware
 const app = express();
 app.use(express.json());
@@ -23,6 +23,7 @@ mongoose
   })
   .then(function () {
     app.listen(3000, function () {
+      console.log("PORT:3000");
       console.log("Node API running successfully");
     });
     console.log("Mongoose connected");
